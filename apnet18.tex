@@ -1,0 +1,151 @@
+\documentclass{apnet18}
+
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage[TABBOTCAP]{subfigure}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{thumbpdf}
+\usepackage{listings}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{colortbl}
+
+\usepackage{colortbl,booktabs}%
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{algorithm}    
+\usepackage{algorithmic} 
+
+
+
+\hypersetup{pdfstartview=FitH,pdfpagelayout=SinglePage}
+
+\setlength\paperheight {11in}
+\setlength\paperwidth {8.5in}
+\setlength{\textwidth}{7in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{-.25in}
+\setlength{\evensidemargin}{-.25in}
+%\setlength{\headsep}{0in}
+%\pagenumbering{arabic}
+
+
+\renewcommand\thesection{\arabic{section}} 
+
+
+
+
+
+\begin{document}
+
+\conferenceinfo{APNet 2018} {}
+\CopyrightYear{2018}
+\crdata{X}
+\date{}
+
+%%%%%%%%%%%% THIS IS WHERE WE PUT IN THE TITLE AND AUTHORS %%%%%%%%%%%%
+
+\title{Dante: An FOV-Aware FEC-Based Multipath Protocol for 360-Degree Video Streaming}
+
+\maketitle
+
+%\thispagestyle{empty}
+
+
+	
+%%%%%%%%%%%%%  ABSTRACT GOES HERE %%%%%%%%%%%%%%
+\section*{Abstract}
+
+360-degree videos have been widely applied due to its unprecedented immersive experience. The appreciation of watching 360-degree videos
+on untethered mobile devices, such as smartphone headsets,
+is considered to be a more promising trend, which, however, is hampered by the
+poor Quality of Experience (QoE), subject to limited bandwidth and error-prone characteristic of wireless networks.
+Fortunately, the key observation that only a small portion of a 360-degree video is
+perceived by users at any time, i.e., Field Of View (FOV), implies that unequal attention
+should be given different regions spatially and can
+be utilized to mitigate dependence on stable network condition and ultra-high bandwidth. Currently, the state-of-the-art schemes, like FOV-aware tile-based streaming in the application layer, almost based on FOV-aware bit-rate adaptation, transport protocol of which, however, fails to consider FOV. So, we propose an application-layer protocol, reliability scheme of which is FOV-aware and performs hierarchical protection to boost QoE of 360-degree videos in mobile scenarios. Experiments demonstrate our protocol achieves desirable improvements over the reference schemes in QoE of 360-degree videos.
+
+\input{intro}
+
+\input{background}
+
+\input{algorithm}
+
+\input{eval}
+
+
+\section{Conclusion}
+In this paper, we propose a multipath protocol for 360-degree videos, which, based on multipath and FEC, performs hierarchical protection to counter limted bandwidth and error-prone problems in wireless networks. Experiments demonstrate Dante achieves desirable gains on 360-degree video QoE against reference schemes.  
+
+\section*{ACKNOWLEDGEMENT}
+The work was supported by the National Key Basic Research Program of China (973 program) under Grant 2014CB347800, National Key Research and Development Program of China under Grant 2016YFB1000200 and the National Natural Science Foundation of China under Grant No. 61522205, No. 61772305, No. 61432002. Dan Li is the corresponding author of this paper.
+
+\bibliographystyle{abbrv}
+\begin{small}
+	\bibliography{apnet18}
+\end{small}
+\label{last-page}
+
+\end{document}
+
+
+
+
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.2]{paper_figs/RS_tradeoff.png}
+	\caption{Tradeoff between recoverability and goodput}
+	\label{paper_figs:pathdemo}
+\end{figure}	 
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.2]{paper_figs/RS_tradeoff_a.png}
+	\caption{Tradeoff between recoverability and goodput}
+	\label{paper_figs:pathdemo}
+\end{figure}	
+
+
+
+
+\begin{table*}
+	\centering 
+	\scriptsize
+	\begin{tabular}{||p{1.35cm}<{\centering}||p{1.5cm}<{\centering}||p{1.7cm}<{\centering}
+			||p{1.65cm}<{\centering} ||p{0.85cm}<{\centering} ||p{2.65cm}<{\centering}
+			||p{2.0cm}<{\centering} || p{0.85cm}<{\centering} || p{0.85cm}<{\centering}||}
+		\hline
+		\rowcolor[gray]{0.9}
+		\hline
+		Solution & protocol layer   & video distortion model & data recovery& adaptive FEC & FEC parameter decision& data
+		allocation&video-awareness& FOV-awareness\\
+		\hline
+		\hline
+		MPLOT\cite{MPLOT} & transport layer & $\times$ & RS codes \& retransmissions & \checkmark
+		& balance between goodput and recovery probability & packet generation's order & $\times$ & $\times$ \\
+		\hline
+		FMTCP\cite{FMTCP}    & transport layer  & $\times$ &Raptor codes \& retransmissions &
+		\checkmark & balance between goodput and recovery probability & packet
+		delivery time minimization & $\times$ & $\times$  \\
+		\hline
+		MPMTP\cite{MPMTP}  & application layer & $\times$ &Raptor codes & \checkmark & goodput maximization & block arrival time
+		minimization & $\times$ & $\times$  \\
+		\hline
+		CMT-VR\cite{CMT-VR}   & transport layer & inflexible model & Raptor codes \&
+		retransmissions & \checkmark & utility maximization& utility maximization &
+		\checkmark & $\times$ \\
+		\hline
+		Dante    &application layer & proposed
+		flexible model & RS code & \checkmark & hierarchical
+		protection and distortion minimization & hierarchical protection & \checkmark & \checkmark \\
+		\hline
+	\end{tabular}
+	\caption{MAIN DIFFERENCE OF THIS WORK WITH THE EXISTING WORKS}
+	\label{}
+\end{table*}

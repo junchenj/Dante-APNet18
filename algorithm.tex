@@ -1,0 +1,154 @@
+
+\section{Protocol Design}
+Unlike the video bit-rate adaptation of FOV-aware streaming, Dante, from the perspective of reliability scheme, preferentially provisions the tiles, which are viewed by user with higher probability and are more important to user's QoE, with more FEC redundancy.  
+
+%We consider the expected video quality loss caused by transmission loss and decoding dependencies of video codec, both of which depend on the FEC parameter adjusting procedure.	
+
+\subsection{FEC Redundancy Adaptive Adjusting}
+The aim of FEC adaptation is to find the optimal FEC redundancy for different data. The key to achieve this is how to judge whether a kind of FEC redundancy is optimal. Obviously, the optimal FEC redundancy is obtained when best QoE of videos is achieved.  video distortion can be considered as a standard metric of QoE. 
+
+\subsubsection{optimization problem}
+
+we consider that optimal FEC redundancy is obtained if minimization of the video distortion is achieved.
+Given predicted viewing probability distribution, packet loss rate $\Pi _m^\alpha$, the optimal FEC redundancy for each layer of all frames can be obtained by solving the following optimization problem, which can be formalated as:
+\begin{eqnarray}
+&{\{ R_m^a\} _{1 \le m \le M,a \in Q}} = \arg \min (\sum\limits_{i = 1}^M {d_{m,effective}}).  \\
+&{\rm{subject}}{~~\rm{to}}{~~~T^{tran}} \le {T_{GOP}}~~~~~~~~~~~~~~~~~, \\
+&{\rm{and}}{~~~~~~\lambda ^p}(\Phi ) \le {\mu _p}\begin{array}{*{20}{c}}
+{}
+\end{array}{\rm{}},{\rm{}}~~~~~~~1 \le p \le P~~~,\\
+&\begin{array}{*{20}{c}}
+{{T^{tran}}{\rm{ = }}}&{\frac{{\sum\nolimits_{m = 1}^M {\sum\nolimits_{\alpha  \in Q} {(V_m^\alpha  \cdot (1 + R_m^a))} } }}{{t{r^{TFRC}}}}}
+\end{array},\\
+&{\lambda ^p}(\Phi ) = \lambda \frac{{\sum\nolimits_{m = 1}^M {\sum\nolimits_{\alpha  \in Q} {{{(V_m^\alpha  \cdot (1 + R_m^a))}_{_{\left\{ {\Phi _m^\alpha  \in p} \right\}}}}} } }}{{\sum\nolimits_{m = 1}^M {\sum\nolimits_{\alpha  \in Q} {V_m^\alpha } } }}.
+\end{eqnarray}
+
+Where, the minimization of distortion for every GOP is the goal of our protocol's FEC parameters adjusting, subject to constraints of deadline and available bandwidth. And $\{ R_m^\alpha \}$, denotes the redundancy of the $\alpha$ layer for the m-th frame. The first constraint (Eq. (3)) indicates that, due to video's timeliness, the data of every GOP should be transmit to the client side before the delay constraint $T_{GOP}$.
+Menwhile, ${V_m^\alpha }$ denotes the size of the $\alpha$ layer for the m-th frame. Given the packet size, S, the estimated round trip time, RTT and estimated packet loss rate, $\Pi_m^\alpha$, the tranmission time of GOP can be calculated by this procedure that the size of GOP, already considering the introduction of FEC redundancy, is divided by the transmission rate, $t{r^{TFRC}}$, according to \cite{TRFC}. 
+
+$\Phi$, a vector, denotes the result of packet scheduling in the scheme of \cite{MPMTP}, which is composed of $\Phi
+_m^\alpha {\rm{\{ }}\alpha  \in Q,1 \le m \le M{\rm{\} }}$,  imposed on the $\alpha$ layer for the m-th frame. And the value range of each $\Phi _m^\alpha $ is the serial number of available paths, like 0 to 1.
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Objective funtion And Video Distortion Description}
+
+%So, we design a distortion-driven FOV-aware FEC adaptation.
+
+By comparing the expected value of estimation of video distortion after FEC redundancy provisioning, we can get the optimal FEC redundancy, corresponding to the optimal expected value of distortion. 
+
+Generally, PSNR is used to evaluate the video quality which is calculated via Mean Squared Error (MSE). So, we measure the video distortion using MSE. 
+
+According to \cite{distortion_model} and \cite{CMT-VR}, 
+The distortion of the m-th frame for every video GOP (group of pictures) can be formulated as:${d_m} = d_{m,trunc}(R_m,\pi) + {d_{m,drift}}$.
+However, unlike non-360-degree videos, only a small portion of 360-degree videos spatially is perceived by users anytime. Meanwhile, according to 360ProbDASH\cite{360ProbDASH}, each tile of 360-degree videos requested by users, is expected to be watched by users with a probability following Gaussian Distribution at any time. So we customize the traditional distortion model into the expected value of distortion, called as the effective distortion, which can be calculated in this schemes in which the distortion of each region is multiplied by its probability of viewing. As a result, for each video frame, the effective distortion is formulated as:
+the distortion is formulated as following:\[{d_{m,effective}} = \sum\limits_{\alpha  \in Q} {{\gamma ^\alpha }(d_{_{m,trunc}}^{^\alpha } + d_{_{m,drift}}^{^\alpha })} \]
+where Q denotes the layer set of 360-degree videos, which includes FOV layer, cushion layer and outmost layer, as depicted in Figure 3. And ${\gamma ^\alpha }$ denotes the accumulated viewing probability of the $\alpha $
+layer:
+\begin{equation}
+{\gamma ^\alpha } = \sum\limits_{i = 1}^{{\Omega ^\alpha }} {{p_i} \cdot
+	{S_i}}
+\end{equation}
+Where ${p_i}$ stands for viewing probability of the i-th tile in the $\alpha $
+layer,   ${S_i}$ denotes spherical area of the i-th tile and
+${\Omega ^\alpha }$ denotes tiles set of the corresponding layer. 
+
+Obvious, the tiles of FOV, which are viewed by users with higher probabilities, are attached with greater weights than non-FOV. Thus, improving the distortion of FOV region can bring more performance gain in video distortion than non-FOV region. 
+
+Manwhile, given the estimated packet loss rate $\pi _{m,\alpha }^t$,  $d_{m,trunc}^\alpha$, denotes the expected value of MSE with regard to FEC redundancy provisioning for the $\alpha$ layer of the m-th frame, which is
+formulated as:
+\[d_{m,trunc}^\alpha (\pi _{m,\alpha }^t) = \widehat \delta _m^\alpha  + \Pi _m^\alpha (\pi _{m,\alpha }^t)\cdot\delta _m^\alpha ,1 \le m \le M\]	
+
+%Given a frame $m$, region $\alpha$, FEC-redundancy rate $k$, and estimated packet loss rate $\pi _{m,\alpha }^t$, $d_{m,\alpha}(k,\pi)$ denotes the expected value of MSE of the frame reconstructed from the packets received before the deadline.
+
+
+where, $d_{m,trunc}^\alpha$ is proportional to $\Pi _m^\alpha$. And given a frame $m$, region $\alpha$, FEC-redundancy rate $k$, and estimated packet loss rate $\pi _{m,\alpha }^t$,
+$\Pi _m^\alpha$ denotes the percentage of lost symbols for the $\alpha$ layer of the m-th frame, which is
+formulated as ,
+\[\Pi _m^\alpha (\pi _{m,\alpha }^t)  = \left\{ \begin{array}{l}
+0,\begin{array}{*{20}{c}}
+{\begin{array}{*{20}{c}}
+	{}&{}
+	\end{array}}
+\end{array}if\begin{array}{*{20}{c}}
+{\pi _{m,\alpha }^t + (1 - \pi _{m,\alpha }^t)}
+\end{array} \cdot \pi _{m,\alpha }^o < \frac{{n - k}}{n},\\
+\begin{array}{*{20}{c}}
+{\pi _{m,\alpha }^t + (1 - \pi _{m,\alpha }^t)}
+\end{array} \cdot \pi _{m,\alpha }^o,\begin{array}{*{20}{c}}
+{}&{}
+\end{array}{\rm{otherwise}}{\rm{.}}
+\end{array} \right.\]
+
+where $(n-k)$ denotes the repair packet of FEC block, and  $\frac{{n - k}}{n}$
+stands for tolerant packet loss rate and $\pi _{m,\alpha }^o$ denotes the overdue loss rate. Obviously, $\prod _m^\alpha$ is equal to 0 if the provisioning of redundant packets is sufficient for countering packet drops caused by transmission loss and expired arrival. 
+
+
+
+\subsubsection{A Algorithm To Solve The Optimal Problem}
+
+Consequently, it's impractical to derive the optimal solution with polynomial time complexity, and the greedy search is not applicable for real time applications. To solve this problem, we design a fast research algorithm, which complexity is $O(N \cdot M \cdot Q)$, to obtain a sub-optimal solution of FEC redundancy adaptive problem, shown in Algorithm 1. 
+
+\begin{algorithm}[!h] 
+	\scriptsize
+	\centering 
+	\caption{FEC redundancy adaptative algorithm}%算法标题      
+	\begin{algorithmic}[1]%一行一个标行号
+		\STATE $R = \min (Eq.~(3), Eq.~(4))$ , according to delay constraints, Eq. (3) and
+		bandwidth constraints Eq. (4),
+		\FOR{$\alpha  \in Q$}  
+		
+		\STATE Calculate $\gamma ^\alpha$ , according to Eq. (1),
+		
+		\ENDFOR
+		
+		\STATE $N = \frac{V}{S} \cdot (1+R)$ 
+		
+		\FOR{$i = 1{\rm{ }} to {\rm{ }}N$}
+		\STATE $index{\rm{ }} = {\rm{ }}0,{\rm{ }}{\Delta _d}{\rm{ }} = 0$
+		\FOR{$m = 1{\rm{ }}to{\rm{ }}M$}
+		\FOR{$\alpha  \in Q$}
+		
+		\STATE ${d_{effective}} = \sum\limits_{0 \le m \le M} {\sum\limits_{\alpha 
+				\in Q} {{\gamma ^\alpha }(d_{_{m,trunc}}^{^\alpha } + d_{_{m,drift}}^{^\alpha
+				})} } $
+		\STATE ${N_{m,\alpha }} = {N_{m,\alpha }} + 1$
+		\STATE $\Delta  = \left| { - {d_{effective}} + \sum\limits_{0 \le m \le M}
+			{\sum\limits_{\alpha  \in Q} {{\gamma ^\alpha }(d_{_{m,trunc}}^{^\alpha } +
+					d_{_{m,drift}}^{^\alpha })} } } \right|$
+		\STATE ${N_{m,\alpha }} = {N_{m,\alpha }} - 1$
+		\IF{$\Delta  \ge {\Delta _d}{\rm{ }}$}
+		\STATE $index{\rm{ }} = m,\begin{array}{*{20}{c}}
+		{layer}
+		\end{array} = \alpha ,{\Delta _d} = \Delta$
+		\ENDIF
+		\ENDFOR 
+		\ENDFOR
+		\STATE ${N_{index, layer }} = {N_{index, layer }} + 1$
+		\ENDFOR
+		\RETURN${\left\{ {{R_{m,\alpha }} = \frac{{{N_{m,\alpha }}{\rm{ - }}{K_{m,\alpha }}}}{{{K_{m,\alpha }}}}} \right\}_{(1 \le m \le M,\alpha  \in Q)}}$
+	\end{algorithmic}  
+\end{algorithm} 
+
+
+
+
+\subsection{System Overview}
+
+Dante is proposed to support high-quality 360-degree video
+streaming service over the wireless network. In Dante, UDP combined with Systematic FEC, RS code, is integrated to provide reliable delivery over wireless networks. And only the data of I frames is retransmitted if no ACK is received by the server in time ${T^I}$, in order to guarateen the video data received is decodable by video codec.
+Besides, TCP is supplementary to exchange control information, which is of significance. The overall protocol architecture is illustrated in Figure 2.
+
+\begin{figure*}[ht]
+	\centering
+	\includegraphics[scale=0.4]{paper_figs/architecture_V2.png}
+	\caption{The Architecture of Protocol}
+	\label{paper_figs:pathdemo}
+\end{figure*}
