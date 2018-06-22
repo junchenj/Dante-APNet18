@@ -60,7 +60,27 @@
 	
 %%%%%%%%%%%%%  ABSTRACT GOES HERE %%%%%%%%%%%%%%
 \section*{Abstract}
-As 360-degree videos grow dramatically in popularity, more applications demand the ability to stream 360-degree videos to wirelessly connected devices, such as smartphone headsets. However, the limited and unstable network capacity of wireless networks make them ill-suited to the quality of experience requirement of 360-degree videos, \ie high resolution with low delay and little jitter. A natural solution is to leverage the fact that at any moment, a user will only watch a small spatial area of the video, called FOV (field of view), which allows for better allocation of network bandwidth to the areas that the user cares the most. Previous work on 360-degree videos has largely focused on how to encode different spatial areas with different bitrates. While we also use the concept of FOV-aware streaming, this paper explores a different design space than application-layer adaptation. We present Dante, a custom UDP-based transport strategy, which adapts to dynamic network conditions by encoding and scheduling data packets based on how close they are to the FOV. Dante is complementary to application-level bitrate adaptation strategies, and can be deployed by replacing the existing underlying transport protocol with minimal changes to the video player. Experimental results show that Dante achieves \fillme.
+As 360-degree videos grow dramatically in popularity, more 
+applications demand the ability to stream 360-degree videos to 
+wirelessly connected devices, such as smartphone headsets. However, 
+the limited and unstable network capacity of wireless networks make 
+them ill-suited to the quality of experience requirements of 
+360-degree videos, \ie high resolution with low delay and little 
+jitter. A natural solution is to leverage the fact that at any 
+moment, a viewer watches only a small spatial region of the video, 
+called FOV (field of view), which allows for better allocation of 
+network bandwidth in the region that the user actually watches. 
+Previous efforts on 360-degree videos have largely focused on how to 
+differentiate spatial areas by different encoded bitrates. While we 
+also use the concept of FOV-aware streaming, this paper explores a 
+different design space than application-layer adaptation. We present 
+a custom UDP-based transport strategy, called {\em Dante}, which 
+adapts to dynamic network conditions by encoding and scheduling data 
+packets based on how close they are to the FOV. Dante is 
+complementary to application-level bitrate adaptation strategies, and
+can be deployed by replacing the existing underlying transport 
+protocol with minimal changes to the video player. Experimental 
+results show that Dante achieves \fillme.
 
 %360-degree videos have been widely applied due to its unprecedented immersive experience. The appreciation of watching 360-degree videos
 %on untethered mobile devices, such as smartphone headsets,
