@@ -41,6 +41,11 @@
 \newcommand{\fillme}{{\bf XXX}~}
 \newcommand{\jc}[1]{{\footnotesize\color{blue}{[JC: #1]}}} %[JC: #1]}}}
 
+
+%\newcommand{\comment}[1]{}
+
+\newenvironment{packeditemize}{\begin{list}{$\bullet$}{\setlength{\itemsep}{0.5pt}\addtolength{\labelwidth}{-4pt}\setlength{\leftmargin}{\labelwidth}\setlength{\listparindent}{\parindent}\setlength{\parsep}{1pt}\setlength{\topsep}{0pt}}}{\end{list}}
+
 \begin{document}
 
 \conferenceinfo{APNet 2018} {}
@@ -50,7 +55,7 @@
 
 %%%%%%%%%%%% THIS IS WHERE WE PUT IN THE TITLE AND AUTHORS %%%%%%%%%%%%
 
-\title{Dante: An FOV-Aware FEC-Based Multipath Protocol for 360-Degree Video Streaming}
+\title{Dante: An FOV-Aware FEC-Based Protocol for 360-Degree Video Streaming}
 
 \maketitle
 
@@ -80,7 +85,7 @@ packets based on how close they are to the FOV. Dante is
 complementary to application-level bitrate adaptation strategies, and
 can be deployed by replacing the existing underlying transport 
 protocol with minimal changes to the video player. Experimental 
-results show that Dante achieves \fillme.
+results show that Dante achieves 20\% to 30\% 360-degree video PSNR performance gain compared to traditional video transport schemes.
 
 %360-degree videos have been widely applied due to its unprecedented immersive experience. The appreciation of watching 360-degree videos
 %on untethered mobile devices, such as smartphone headsets,
@@ -101,7 +106,7 @@ results show that Dante achieves \fillme.
 
 
 \section{Conclusion}
-In this paper, we propose a multipath protocol for 360-degree videos, which, based on multipath and FEC, performs hierarchical protection to counter limted bandwidth and error-prone problems in wireless networks. Experiments demonstrate Dante achieves desirable gains on 360-degree video QoE against reference schemes.  
+In this paper, we propose a multipath protocol for 360-degree videos, which, based on multipath and FEC, performs hierarchical protection to counter limited bandwidth and error-prone problems in wireless networks. Experiments demonstrate Dante achieves desirable gains on 360-degree video QoE against reference schemes.  
 
 \section*{ACKNOWLEDGEMENT}
 The work was supported by the National Key Basic Research Program of China (973 program) under Grant 2014CB347800, National Key Research and Development Program of China under Grant 2016YFB1000200 and the National Natural Science Foundation of China under Grant No. 61522205, No. 61772305, No. 61432002. Dan Li is the corresponding author of this paper.
