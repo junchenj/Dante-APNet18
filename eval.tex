@@ -4,8 +4,11 @@
 \begin{figure*}[!t]
 	%\begin{figure*}[t]
 	\centering
-	\subfigure[Video Sequence 1]  {\includegraphics[scale=0.26,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v2_good.png}}
-	\subfigure[Video Sequence 2]  {\includegraphics[scale=0.26,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v3_good.png}}
+    % \subfigure[Video Sequence 1]  {\includegraphics[scale=0.26,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v2_good.png}}
+    % \subfigure[Video Sequence 2]  {\includegraphics[scale=0.26,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v3_good.png}}
+    \subfigure[Video Sequence 1]  {\includegraphics[width=0.5\textwidth]{paper_figs/dante-good-video-1.pdf}}
+    \hspace{-0.3cm}
+	\subfigure[Video Sequence 2]  {\includegraphics[width=0.5\textwidth]{paper_figs/dante-good-video-2.pdf}}
 	\vspace{-0.3cm}
 	\caption{Instantaneous PSNR In Relatively Good Network Condition}
 	\vspace{-0.4cm}
@@ -16,8 +19,10 @@
 \begin{figure*}[!t]
 	%\begin{figure*}[t]
 	\centering
-	\subfigure[Video Sequence 1]  {\includegraphics[scale=0.275,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v1_bad.png}}
-	\subfigure[Video Sequence 2]  {\includegraphics[scale=0.27,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v2_bad.png}}
+% 	\subfigure[Video Sequence 1]  {\includegraphics[scale=0.275,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v1_bad.png}}
+% 	\subfigure[Video Sequence 2]  {\includegraphics[scale=0.27,angle=0]{paper_figs/evaluation_result/sub/ins_psnr_v2_bad.png}}
+    \subfigure[Video Sequence 1]  {\includegraphics[width=0.5\textwidth]{paper_figs/dante-bad-video-1.pdf}}\hspace{-0.3cm}
+	\subfigure[Video Sequence 2]  {\includegraphics[width=0.5\textwidth]{paper_figs/dante-bad-video-2.pdf}}
 	\vspace{-0.3cm}
 	\caption{Instantaneous PSNR In Relatively Bad Network Condition}
 	\vspace{-0.4cm}
@@ -26,20 +31,27 @@
 
 
 
-
 \section{Performance Evaluation}
-We use PSNR as the metric of video quality and conducted extensive experiments to demonstrate Dante performance gains on video quality. 
+
+
+
 
 \subsection{Reference schemes}
-We evaluate the performance of Dante to compare with two video transport schemes, MPMTP~\cite{MPMTP} and CMT-VR~\cite{CMT-VR}, both of which are not FOV-aware and also utilize FEC to mitigating unnecessary retransmissions. Meanwhile, since the multi-path parallel is not our fous, so we do not take into account these two schemes' path selecting. 
+We use two 360-degree video sequences downloaded from Youtube as our dataset to 
+evaluate Dante and compare it with TCP-based 360-degree streaming 
+protocols, FOV-aware DASH \cite{Omnidirectional_Video_over_HTTP} and traditional FEC-enabled streaming protocols MTMTP \cite{MPMTP} and CMT-VR \cite{CMT-VR}, both of which are not FOV-aware. 
+
+%We evaluate the performance of Dante to compare with two video transport schemes, MPMTP~\cite{MPMTP} and CMT-VR~\cite{CMT-VR}, both of which are not FOV-aware and also utilize FEC to mitigating unnecessary retransmission.
+
 \begin{packeditemize}
 
 \item {\em MPMTP\cite{MPMTP}:} .
-This video protocol utilizes the FEC to recover the data,  completely abandoning the retransmission,  in order to maximize the received data rate to prevent playback buffer starvation. This scheme performs in a video content-agnostic fashion. 
+This video protocol utilizes the FEC to recover the data, completely abandoning the retransmission,  in order to maximize the received data rate to prevent playback buffer starvation. This scheme performs in a video content-agnostic fashion. 
 
-% high bandwidth
 \item {\em CMT-VR\cite{CMT-VR}:}
-CMT-VR, based on SCTP, utilize a quality-driven FEC redundancy  allocation to minimize the distortion of each GOP. Raptor code used to mitigate retransmission. While this scheme considers frame priority, \ie I, P frames, it is in a non-FOV-aware fashion. 
+CMT-VR utilize a quality-driven FEC redundancy allocation to minimize the distortion of each GOP and Raptor code is used to mitigate retransmission. While this scheme considers frame priority, \ie I, P frames, it is in a non-FOV-aware fashion. 
+
+\item This work\cite{Omnidirectional_Video_over_HTTP} utilize an FOV-aware tile-based streaming scheme to mitigate the cost of bandwidth. It's built on the HTTP, using TCP as underlying transport protocol.
 
 \end{packeditemize}
 
@@ -49,7 +61,27 @@ CMT-VR, based on SCTP, utilize a quality-driven FEC redundancy  allocation to mi
 
 \textbf{Testbed configuration:} The sources and sinks are commodity servers with Ubuntu 16.4 (kernel 4.40), each of which is equipped with an Intel(R) Core(TM) i3-4150k cpu @ 3.5GHz (4 cores), one Intel 82599ES 10G dual port NICs and 32 G memory.
 
+\begin{table}
+	\centering 
+	\scriptsize
+	\begin{tabular}{cp{1.5cm}p{1.0cm}|p{1.5cm}p{1cm}}
+%		\rowcolor[gray]{0.9} 
+		\hline
+		 & $T_I$ &  200ms   &   The length of segment  & 1s \\
+        \hline
+		&  receiver buffer size  &  100Mb  &  The size of GOP  &  15 \\
+		\hline
+
+	\end{tabular}
+	\caption{Parameter set
+	\label{}
+\end{table}
+
+
+
+
 \textbf{Parameter sets}
+
 Timeout for triggering I frames' retransmission, $T_I$, is set to 200ms, the size of GOP is set to 15 and the length of video segment, which is request by users each time, is sent to 1s, equal to the time of 2 GOPs. Meanwhile, the size of the receiver buffer is set to 100Mb.
 We evaluate the quality of video by computing the expected value of PSNR. So, given a video segment, it's PSNR can be calculated via: \[{V_{PSNR}} = \sum\limits_{i = 1}^{{\Omega ^\alpha }} {({\gamma ^\alpha } \cdot V_{PSNR}^{^\alpha })} \]
 where, ${V_{PSNR}^{^\alpha }}$ is the PSNR of the layer $\alpha$. According to a tiles viewing probabilities \cite{360ProbDASH} and (Eq. 7), $\gamma ^\alpha$ can be approximately obtained and $\gamma ^\alpha$ of FOV layer, cushion layer and outmost layer is almost 0.6, 0.3, 0.1, respectively.
@@ -62,7 +94,7 @@ where, ${V_{PSNR}^{^\alpha }}$ is the PSNR of the layer $\alpha$. According to a
 	\begin{tabular}{cp{1.0cm}p{1.6cm}p{0.8cm}p{2.3cm}}
 		\rowcolor[gray]{0.9} 
 		\hline
-		(A)  &  Time(Sec.)    & Bandwidth(Mbps)       &  RTT(ms) &  Average Pakcet loss rate(\%) \\
+		(A)  &  Time(Sec.)    & network capacity(Mbps)       &  RTT(ms) &  Average Pakcet loss rate(\%) \\
 
 		
 		&  0${\sim}$60   &  30         &    50    &  0.5 \\
@@ -72,7 +104,7 @@ where, ${V_{PSNR}^{^\alpha }}$ is the PSNR of the layer $\alpha$. According to a
 		\hline
 		(B)  &   Time(Sec.)   & Bandwidth(Mbps)       &  RTT(ms) &     Average Pakcet loss rate(\%)  \\
 		
-		&  0${\sim}$60   &  20         &    50    &  2.5\\
+		&  0${\sim}$60   &  20         &    50    &  1.5\\
 		
 		\hline
 		
@@ -80,7 +112,21 @@ where, ${V_{PSNR}^{^\alpha }}$ is the PSNR of the layer $\alpha$. According to a
 	\caption{Network Condition of Two Wireless networks: (A)Relatively Good Wireless Conditions And (B)Relatively Bad Wireless Conditions}
 	\label{}
 \end{table}
-`
+
+
+% \begin{figure*}[!t]
+% 	%\begin{figure*}[t]
+% 	\centering
+% 	\subfigure[Video Sequence 1]  {\includegraphics[scale=0.26,angle=0]{paper_figs/Dante_VS_TCP_1.png}}
+% 	\subfigure[Video Sequence 2]  {\includegraphics[scale=0.26,angle=0]{paper_figs/Dante_VS_TCP_2.png}}
+% 	\vspace{-0.3cm}
+% 	\caption{The PSNR of Dante_VS_FOV-Aware_DASH}
+% 	\vspace{-0.4cm}
+% 	\label{fig:apuct}
+% \end{figure*}
+
+
 \subsection{Performance Comparison With Existing Protocols}
 
-Then, Figure 5 and Figure 6 compare instantaneous PSNR of three video sequences in good network condition and bad network condition, respectively. The result shows that Dante achieves 20\% to 30\% 360-degree video PSNR performance gain, compared to MPMTP and CMT-VR. The reason why MPMTP performs worst in all protocols is that, despite no involving retransmissions and maximizing the throughput, it doesn't consider video's inherent feature, such as decoding dependencies of video codec, which should have give different frame unequal attention, and thus can't utilize effectively the network allocation to boost video quality. Meanwhile, CMT-VR performs better than MPMTP, due to its consideration of frame priority. However, unfortunately, non-FOV-aware reliability scheme makes it waste valuable bandwidth on trivial data, thus CMT-VR is the secondary one. Dante takes into account not only traditional video features aforementioned, but FOV. Benefiting from the hierarchical protection spatially and temporally, Dante achieves desirable upgrade in instantaneous PSNR. Meanwhile, we find, compared to TCP without FEC, the average CPU time of Dante's, due to the introduction of FEC computing overhead, increases from 14\% to 25\% for the sender side, and from 14\% to 26\% for the receiver side. The overhead of FEC can be ignored considering the performance gain Dante achieves.      
+Then, Figure 5 and Figure 6 compare instantaneous PSNR of three video sequences in good network condition and bad network condition, respectively. The result shows that Dante achieves 20\% to 30\% 360-degree video PSNR performance gain, compared to MPMTP and CMT-VR. The reason why MPMTP performs worst in all protocols is that, despite no involving retransmission and maximizing the throughput, it doesn't consider video's inherent feature, such as decoding dependencies of video codec, \ie I frames's importance, and thus fails to utilize effectively the network allocation to boost video quality. Meanwhile, CMT-VR performs better than MPMTP, due to its consideration of frame priority. However, unfortunately, non-FOV-aware reliability scheme makes it waste valuable bandwidth on trivial data, thus CMT-VR is the secondary one. Dante takes into account not only traditional video features aforementioned, but FOV. Benefiting from the hierarchical protection spatially and temporally, Dante achieves desirable upgrade in instantaneous PSNR. Meanwhile, we find, compared to TCP without FEC, the average CPU time of Dante's, including the cpu time of receiving socket, FEC decoding, video codec decoding as well as video rendering, due to the introduction of FEC computing overhead, increases from 114\% to 125\% for the sender side, and from 113\% to 126\% for the receiver side. The almost 11.5 percentage of the extra cpu overhead of FEC can be ignored considering the performance gain Dante achieves.    
+

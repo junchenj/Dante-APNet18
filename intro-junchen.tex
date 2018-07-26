@@ -1,0 +1,108 @@
+\tightsection{Introduction}
+
+% 360 degree videos are important
+360-degree videos are coming to age, largely driven by content
+providers (\eg CNN, New York Times) serving more immersive content (\eg 
+NBC broadcasting the 2018 Winter Olympics in VR~\cite{NBC_olympic_360}), 
+as well as 
+by more immersive video 
+devices~\cite{google_developers,facebook360,SUMSUNG_HEADSET}.
+However, streaming 360-degree videos to mobile devices over wireless
+networks remains a substantial challenge.
+
+% why it's challenging
+To offer true immersive experience, 360-degree videos must be streamed
+in high resolution and within a small, bounded delay.
+
+\begin{packeditemize}
+% low delay
+\item {\em Stringent delay constraint:} 
+To prevent simulator sickness \cite{Simulator_Sickness} and ensure high
+video quality, HeadMounted Display vendors recommend that the video systems
+react to head movements as fast as the HMD refresh rate.
+Given that
+refresh rate of state-of-the-art HMDs is 120Hz \cite{120fps},
+the whole system should react in less than 10ms.
+These stringent delay constraints render many traditional streaming 
+techniques (\eg~\cite{MPEG-DASH}) insufficient.
+
+%\jc{reword the last sentence. what's "application round-trip latency"? why "sickness" is caused by some "refresh rate"?} These stringent delay constraints render many traditional streaming  protocols (\eg~\cite{??,??}) insufficient.
+
+% high bandwidth
+\item {\em High-bandwidth consumption:}
+360-degree videos require high bandwidth in order to stream videos in
+high resolution, ideally, over the whole 360-degree sphere; \eg the 
+bitrate of an 8K 360-degree video encoded at a frame rate of 60 
+frames per second with HEVC~\cite{HEVC} is $\sim$100Mbps. However,
+according to
+OpenSignal~\cite{opensignal}, almost a half of the 77 surveyed 
+countries in 2017 over the world only have access to 4G cellular 
+networks of 10-25 Mbps.
+\end{packeditemize}
+% \vspace{-0.1cm}
+
+% fov-aware streaming & problems
+One  common approach to addressing this challenge is that, 
+instead of streaming all video content simultaneously, one can stream
+only the video content in and around the viewer's FOV,
+or prioritize data in those FOV regions over non-FOV regions. This 
+FOV-aware approach has attracted great attention in recent 
+years~\cite{Viewport-adaptive,360ProbDASH,Adaptive_Streaming_Framework,Two-tier,Omnidirectional_Video_over_HTTP}, 
+leading to various strategies that adapt application-level 
+parameters, \eg 
+encoding bitrate, to allocate bandwidth intelligently 
+to ensure good quality of content in the FOV regions. 
+However, these application-level strategies 
+fail  to directly reduce the streaming delay. This is because 
+they run on top of transport mechanisms that rely on 
+retransmission to send the video content in its entirety,
+and due to long latency in wireless networks and 360-degree video's
+stringent delay constraint, any retransmission
+can potentially cause playback interruptions.
+% existing transport protocols that are unaware of FOVs
+% and thus fail to leverage the fact that data packets may have different
+% inherent priority depending on whether the carried video data belong to
+% FOV region.
+
+% custom transport protocols & problems
+On the other hand, there have been proposals of custom transport 
+protocols for streaming delay-sensitive videos~\cite{MPMTP,CMT-VR,ADMIT}. 
+Unfortunately, they have so far focused on traditional video content, 
+as opposed to 360-degree videos. So the opportunities of developing a 
+custom transport protocol for 360-degree video streaming remain untapped.
+In particular, when setting the transport-level actions (\eg redundancy
+levels), they fail to leverage the spatial heterogeneity of 
+viewer's attention around FOVs.
+
+% our solution
+In this paper, we propose {\em Dante}, an FOV-aware transport protocol
+for 360-degree video streaming, as depicted in Figure. ~\ref{fig:stack}. 
+% Figure. 2 puts Dante into the perspective of previous efforts. 
+At the core of Dante are two ideas. First, like other video-specific custom streaming protocols, Dante does not enforce
+total reliability which could lead to excessive re-transmissions and 
+unstable streaming delay, 
+and Dante uses Forward Error Correction (FEC) to recover data losses 
+without retransmissions, thus significantly reducing and 
+stabilizing the streaming delay.
+While these protocols might cause small fraction of missing frames 
+(except key frames for which we do apply retransmission to ensure 
+reliability), our evaluation shows that its impact on video quality is 
+negligible, even under highly lossy network connections. 
+Second, Dante prioritizes FOV regions by using more FEC redundancy to 
+send data packets belonging to FOV regions (predicted by the 
+video player). This effectively gives packets in FOV regions more 
+bandwidth, higher reliability, and more chance to meet the streaming 
+delay constraint.
+
+We use two videos downloaded from Youtube as our dataset to 
+evaluate Dante and compare it with TCP-based 360-degree streaming 
+protocols, FOV-aware DASH \cite{Omnidirectional_Video_over_HTTP} and traditional FEC-enabled streaming protocols MTMTP \cite{MPMTP} and CMT-VR \cite{CMT-VR} 
+that are not FOV-aware. The experimental results show that Dante 
+improves video PSNR over current video transport protocols by
+20\% to 30\%. Furthermore, Dante, combined with FOV-aware tile-based bitrate adaptation, improves video PSNR over TCP-based FOV-aware DASH by 40\%.
+%\jc{how about TCP-based?}
+
+%\jc{need a para to summarize the key results: 
+%we use what dataset to evaluate the performance of Dante and compares it against what baseline.  the experimental results show that Dante improves what metrics over  what baselines by how much}
+
+

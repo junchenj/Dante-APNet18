@@ -1,35 +1,53 @@
-\documentclass{apnet18}
+% \documentclass{apnet18}
+\documentclass[sigconf,10pt]{acmart}
 
-\usepackage{times}
-\usepackage{epsfig}
-\usepackage[TABBOTCAP]{subfigure}
-\usepackage{tabularx}
-\usepackage{graphicx}
+% \usepackage{times}
+% \usepackage{epsfig}
+% \usepackage[TABBOTCAP]{subfigure}
+% \usepackage{tabularx}
+% \usepackage{graphicx}
 \usepackage{color}
 \usepackage{xspace}
-\usepackage{thumbpdf}
-\usepackage{listings}
-\usepackage{verbatim}
-\usepackage{hyperref}
-\usepackage{booktabs}
+% \usepackage{thumbpdf}
+% \usepackage{listings}
+% \usepackage{verbatim}
+% \usepackage{hyperref}
+% \usepackage{booktabs}
 \usepackage{colortbl}
 
-\usepackage{colortbl,booktabs}%
+% \usepackage{colortbl,booktabs}%
 \usepackage{subfigure}
 \usepackage{amsmath}
 \usepackage{algorithm}    
 \usepackage{algorithmic} 
 
+\geometry{left=0.75in,right=0.75in,top=0.875in,bottom=0.875in}
+
+% \usepackage{fancyhdr} 
+% \renewcommand{\headrulewidth}{0pt} 
+% \renewcommand{\footrulewidth}{0pt}
+
+% \maketitle 
+% \thispagestyle{fancy} 
+% \fancyhead{} 
+% \lhead{} 
+% \lfoot{978-1-5386-4362-4/18/$31.00 \copyright 2018 IEEE} 
+% \cfoot{} 
+% \rfoot{}
 
 
-\hypersetup{pdfstartview=FitH,pdfpagelayout=SinglePage}
 
-\setlength\paperheight {11in}
-\setlength\paperwidth {8.5in}
-\setlength{\textwidth}{7in}
-\setlength{\textheight}{9.25in}
-\setlength{\oddsidemargin}{-.25in}
-\setlength{\evensidemargin}{-.25in}
+
+
+% \hypersetup{pdfstartview=FitH,pdfpagelayout=SinglePage}
+
+% \setlength\paperheight {11in}
+% \setlength\paperwidth {8.5in}
+% \setlength{\textwidth}{7in}
+% \setlength{\textheight}{9.25in}
+% \setlength{\oddsidemargin}{-.25in}
+% \setlength{\evensidemargin}{-.25in}
+
 %\setlength{\headsep}{0in}
 %\pagenumbering{arabic}
 
@@ -40,52 +58,92 @@
 \newcommand{\ie}{{\it i.e.,}\xspace}
 \newcommand{\fillme}{{\bf XXX}~}
 \newcommand{\jc}[1]{{\footnotesize\color{blue}{[JC: #1]}}} %[JC: #1]}}}
-
-
-%\newcommand{\comment}[1]{}
-
 \newenvironment{packeditemize}{\begin{list}{$\bullet$}{\setlength{\itemsep}{0.5pt}\addtolength{\labelwidth}{-4pt}\setlength{\leftmargin}{\labelwidth}\setlength{\listparindent}{\parindent}\setlength{\parsep}{1pt}\setlength{\topsep}{0pt}}}{\end{list}}
+
+% \newcommand{\tightcaption}[1]{\vspace{-0.4cm}\caption{{\textit{\textbf{#1}}}}\vspace{-0.38cm}}
+\newcommand{\tightcaption}[1]{\vspace{-0.4cm}\caption{{\textit{\textbf{#1}}}}\vspace{-0.0cm}}
+
+\newcommand{\tightsection}[1]{\vspace{-0.25cm}\section{#1}\vspace{-0.08cm}}
+\newcommand{\tightsubsection}[1]{\vspace{-0.35cm}\subsection{#1}\vspace{-0.08cm}}
+%\newcommand{\tightsection}[1]{\vspace{-0.0cm}\section{#1}\vspace{-0.0cm}}
+%\newcommand{\tightsubsection}[1]{\vspace{-0.0cm}\subsection{#1}\vspace{-0.0cm}}
+\newcommand{\tightsubsubsection}[1]{\vspace{-0.01in}\subsubsection{#1}\vspace{-0.01cm}}
+
+\setlength{\textfloatsep}{2pt}
 
 \begin{document}
 
-\conferenceinfo{APNet 2018} {}
-\CopyrightYear{2018}
-\crdata{X}
-\date{}
+	
+
 
 %%%%%%%%%%%% THIS IS WHERE WE PUT IN THE TITLE AND AUTHORS %%%%%%%%%%%%
 
-\title{Dante: An FOV-Aware FEC-Based Protocol for 360-Degree Video Streaming}
+% \title{Dante: An FOV-Aware FEC-Based Protocol for 360-Degree Video Streaming}
+\title{Dante: Enabling FOV-Aware Adaptive FEC Coding \\for 360-Degree Video Streaming}
 
-\maketitle
+
+\author{\large{
+Zhetao Li$^{\dagger}$, Fei Gui$^{\dagger}$, Jinkun Geng$^{\circ}$, Dan Li$^{\circ}$, Zhibo Wang$^{\Diamond}$, Junfeng Li$^{\circ}$, Yang Cheng$^{\circ}$, Usama Zafar$^{\circ}$\\ \\
+$^{\dagger}$Xiangtan University~~~~~~~~~~~~  $^{\circ}$Tsinghua University~~~~~~~~~~~~~  $^{\Diamond}$Wuhan University}}
+
+% Zhe tao Li (Xiangtan University)
+%               Fei Gui (Xiangtan University)
+%               Jinkun Geng (Tsinghua University)
+%               Dan Li* (Tsinghua University)
+%               Zhibo Wang (Wuhan University)
+%               Junfeng Li (Tsinghua University)
+%               Yang Cheng (Tsinghua University)
+%               Usama Zafar (Tsinghua University)
+
+
+\copyrightyear{2018}
+\acmYear{2018}
+\setcopyright{acmcopyright}
+\acmConference[APNet '18]{2nd Asia-Pacific Workshop on
+	Networking}{August 2--3, 2018}{Beijing, China}
+\acmBooktitle{APNet '18: 2nd Asia-Pacific Workshop on Networking, August
+	2--3, 2018, Beijing, China}
+\acmPrice{15.00}
+\acmDOI{10.1145/3232565.3232569}
+\acmISBN{978-1-4503-6395-2/18/08}
+
+\renewcommand{\shortauthors}{ F. Gui et al.}
 
 %\thispagestyle{empty}
 
 
 	
 %%%%%%%%%%%%%  ABSTRACT GOES HERE %%%%%%%%%%%%%%
-\section*{Abstract}
+\begin{abstract}
 As 360-degree videos grow dramatically in popularity, more 
 applications demand the ability to stream 360-degree videos to 
 wirelessly connected devices, such as smartphone headsets. However, 
-the limited and unstable network capacity of wireless networks make 
-them ill-suited to the quality of experience requirements of 
-360-degree videos, \ie high resolution with low delay and little 
-jitter. A natural solution is to leverage the fact that at any 
-moment, a viewer watches only a small spatial region of the video, 
-called FOV (field of view), which allows for better allocation of 
-network bandwidth in the region that the user actually watches. 
-Previous efforts on 360-degree videos have largely focused on how to 
-differentiate spatial areas by different encoded bitrates. While we 
-also use the concept of FOV-aware streaming, this paper explores a 
-different design space than application-layer adaptation. We present 
-a custom UDP-based transport strategy, called {\em Dante}, which 
-adapts to dynamic network conditions by encoding and scheduling data 
-packets based on how close they are to the FOV. Dante is 
-complementary to application-level bitrate adaptation strategies, and
-can be deployed by replacing the existing underlying transport 
-protocol with minimal changes to the video player. Experimental 
-results show that Dante achieves 20\% to 30\% 360-degree video PSNR performance gain compared to traditional video transport schemes.
+the limited capacity and the unstable network conditions make 
+wireless networks ill-suited to the requirements of 
+360-degree videos---high resolution and low delay. One common 
+approach is to take advantage of the fact that the viewer only
+watches a small portion of the video around the 
+field of view (FOV). This allows for better allocation of 
+network bandwidth by prioritizing content the viewer actually watches. 
+Previous efforts on 360-degree videos have largely focused on 
+adapting the encoded bitrate to optimize video quality in the 
+time-varying FOV. This paper follows the general FOV-aware approach
+but uses a different technique. Rather than adapting bitrate, 
+we explore the opportunities of a custom underlying 
+transport protocol for 360-degree videos.  In particular, we
+make a case for using Forward Error Correction (FEC) 
+coding over UDP to reduce video streaming delay (a key 
+limitation of all TCP-based approaches).
+We present {\em Dante}, an FOV-aware UDP-based video streaming protocol 
+that adapts to changing network conditions by dynamically
+choosing FEC redundancy levels based on how close the video content is
+to the FOV region. Experimental 
+results show that Dante improves video quality (PSNR) by 20\% to
+30\% over traditional UDP-based video 
+streaming protocols and 40\% over FOV-aware DASH.
+\end{abstract}
+
+\maketitle
 
 %360-degree videos have been widely applied due to its unprecedented immersive experience. The appreciation of watching 360-degree videos
 %on untethered mobile devices, such as smartphone headsets,
@@ -96,19 +154,69 @@ results show that Dante achieves 20\% to 30\% 360-degree video PSNR performance 
 %should be given different regions spatially and can
 %be utilized to mitigate dependence on stable network condition and ultra-high bandwidth. Currently, the state-of-the-art schemes, like FOV-aware tile-based streaming in the application layer, almost based on FOV-aware bit-rate adaptation, transport protocol of which, however, fails to consider FOV. So, we propose an application-layer protocol, reliability scheme of which is FOV-aware and performs hierarchical protection to boost QoE of 360-degree videos in mobile scenarios. Experiments demonstrate our protocol achieves desirable improvements over the reference schemes in QoE of 360-degree videos.
 
-\input{intro}
+% \input{intro}
+\input{intro-junchen}
 
-\input{background}
+% \input{background}
+\input{background-junchen}
 
-\input{algorithm}
+% \input{algorithm}
+\input{algorithm-junchen}
 
-\input{eval}
+% \input{eval}
+\input{eval-junchen}
+
+\tightsection{Discussion}
+
+\vspace{0.1cm}
+\noindent{\bf Why specialized protocols?}
+Most solutions of 360-degree video streaming today are built on 
+existing HTTP-based protocols designed for traditional 
+videos, such as video-on-demand content, 
+which are arguably less demanding than immersive 360-degree 
+videos in both throughput and delay. While this is not 
+without reason (\eg to be compatible with HTTP and reuse CDN servers 
+make perfect sense economically), we also see reasons 
+to think otherwise. One argument of our work is that specialized 
+protocols (FOV-based FEC coding over UDP) can achieve 
+significantly better quality. Moreover, Dante is compatible with 
+classic streaming stacks like RTP ~\cite{rfc5109}, which have been 
+deployed in many legacy services. We leave the question of
+deployability of a new specialized video protocol to
+future investigation.
+
+\vspace{0.1cm}
+\noindent{\bf Relationship to bitrate adaptation:}
+Beside deployability, another concern of Dante is how it should 
+interact with application-layer bitrate adaptation. On one hand, 
+they are functionally complementary. Dante should treat tiles  
+encoded with application-specified bitrates as individual files, 
+and select FEC redundancy independently to the bitrate of each 
+tile. On the other hand, they do affect the performance of each 
+other. For instance, if FOV prediction is inaccurate, setting FEC 
+redundancy intelligently will not be very helpful, because we 
+will probably optimize the video quality of an area not 
+eventually viewed. Although the current design of Dante in theory 
+is able to work with arbitrary FOV prediction (\ie one can set 
+any values for $\gamma_{i,j}$ in Equation~\ref{eq:obj}), it is 
+unclear how much FOV prediction accuracy is necessary for FEC 
+redundancy adaptation to be useful.
+
+\vspace{-0.2cm}
+\tightsection{Conclusion}
+This paper proposes Dante, an FOV-aware UDP-based streaming 
+protocol for 360-degree videos which leverages the hierarchical 
+spatial structure of FOVs. We present adaptive 
+FEC coding strategy to prioritize areas that the viewer
+is likely to watch. The preliminary results show that Dante achieves
+better 360-degree video quality than non FOV-aware UDP-based 
+baselines and state-of-the-arts TCP-based baseline.
+% protection to counter limited bandwidth and error-prone problems in wireless networks. Experiments demonstrate Dante achieves desirable gains on 360-degree video QoE against reference schemes.  
 
 
-\section{Conclusion}
-In this paper, we propose a multipath protocol for 360-degree videos, which, based on multipath and FEC, performs hierarchical protection to counter limited bandwidth and error-prone problems in wireless networks. Experiments demonstrate Dante achieves desirable gains on 360-degree video QoE against reference schemes.  
-
+\vspace{-0.4cm}
 \section*{ACKNOWLEDGEMENT}
+We would like to thank the anonymous APNet reviewers and our shepherd, Junchen Jiang for their helpful comments.
 The work was supported by the National Key Basic Research Program of China (973 program) under Grant 2014CB347800, National Key Research and Development Program of China under Grant 2016YFB1000200 and the National Natural Science Foundation of China under Grant No. 61522205, No. 61772305, No. 61432002. Dan Li is the corresponding author of this paper.
 
 \bibliographystyle{abbrv}
